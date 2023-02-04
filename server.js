@@ -10,7 +10,7 @@ app.use(express.static("public"));
 
 // Route to serve the default "index.html" file
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/html/index.html");
+  res.sendFile(__dirname + "/public/index.html");
 });
 // Read configuration file
 const config = JSON.parse(fs.readFileSync("./config/config.json"));
@@ -26,94 +26,94 @@ MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
     console.log(err);
     return res.status(500).send({ message: "Error connecting to database." });
   } else {
-    const dbUsers = client.db("users");
-    const users = dbUsers.collection("users");
+    // const dbUsers = client.db("users");
+    // const users = dbUsers.collection("users");
     const dbProduct = client.db("product");
     const screwCollection = dbProduct.collection("screw");
-    const nailCollection = dbProduct.collection("nail");
-    const anchorCollection = dbProduct.collection("anchor");
+    // const nailCollection = dbProduct.collection("nail");
+    // const anchorCollection = dbProduct.collection("anchor");
     // Route to handle user sign-in
-    app.post("/signin", async (req, res) => {
-      const user = await users.findOne({ username: req.body.username });
+    // app.post("/signin", async (req, res) => {
+    //   const user = await users.findOne({ username: req.body.username });
 
-      if (user) {
-        // Compare password with hashed password stored in the database
-        const isPasswordCorrect = await bcrypt.compare(
-          req.body.password,
-          user.password
-        );
+    //   if (user) {
+    //     // Compare password with hashed password stored in the database
+    //     const isPasswordCorrect = await bcrypt.compare(
+    //       req.body.password,
+    //       user.password
+    //     );
 
-        if (isPasswordCorrect) {
-          // Login successful, redirect to editDashboard.html
-          res.redirect("/editDashboard.html");
-        } else {
-          // Login failed, send error message
-          res.status(401).send("Incorrect username or password");
-        }
-      } else {
-        // Login failed, send error message
-        res.status(401).send("Incorrect username or password");
-      }
-    });
+    //     if (isPasswordCorrect) {
+    //       // Login successful, redirect to editDashboard.html
+    //       res.redirect("/editDashboard.html");
+    //     } else {
+    //       // Login failed, send error message
+    //       res.status(401).send("Incorrect username or password");
+    //     }
+    //   } else {
+    //     // Login failed, send error message
+    //     res.status(401).send("Incorrect username or password");
+    //   }
+    // });
     app.post("/product/productType", async (req, res) => {
-      console.log(request.body);
-      response.send(request.body);
-      // const productType = req.params.productType;
-      // switch (productType) {
-      //   case "screw":
-      //     screwCollection.insertOne(
-      //       {
-      //         productID: req.body.id,
-      //         company: req.body.company,
-      //         material: req.body.material,
-      //       },
-      //       (err, result) => {
-      //         if (err) {
-      //           console.log(err);
-      //           res.status(500).send({ message: "Internal Server Error" });
-      //         } else {
-      //           res.send({ message: "Screw created successfully" });
-      //         }
-      //       }
-      //     );
-      //     break;
-      //   case "nail":
-      //     nailCollection.insertOne(
-      //       {
-      //         productID: req.body.id,
-      //         company: req.body.company,
-      //         material: req.body.material,
-      //       },
-      //       (err, result) => {
-      //         if (err) {
-      //           console.log(err);
-      //           res.status(500).send({ message: "Internal Server Error" });
-      //         } else {
-      //           res.send({ message: "Nail created successfully" });
-      //         }
-      //       }
-      //     );
-      //     break;
-      //   case "anchor":
-      //     anchorCollection.insertOne(
-      //       {
-      //         productID: req.body.id,
-      //         company: req.body.company,
-      //         material: req.body.material,
-      //       },
-      //       (err, result) => {
-      //         if (err) {
-      //           console.log(err);
-      //           res.status(500).send({ message: "Internal Server Error" });
-      //         } else {
-      //           res.send({ message: "Anchor created successfully" });
-      //         }
-      //       }
-      //     );
-      //     break;
-      //   default:
-      //     res.status(400).send({ message: "Invalid product type" });
-      // }
+      console.log(req.body);
+      res.json(req.body);
+      const productType = req.params.productType;
+      switch (productType) {
+        case "screw":
+          screwCollection.insertOne(
+            {
+              productID: req.body.id,
+              company: req.body.company,
+              material: req.body.material,
+            },
+            (err, result) => {
+              if (err) {
+                console.log(err);
+                res.status(500).send({ message: "Internal Server Error" });
+              } else {
+                res.send({ message: "Screw created successfully" });
+              }
+            }
+          );
+          break;
+        //   case "nail":
+        //     nailCollection.insertOne(
+        //       {
+        //         productID: req.body.id,
+        //         company: req.body.company,
+        //         material: req.body.material,
+        //       },
+        //       (err, result) => {
+        //         if (err) {
+        //           console.log(err);
+        //           res.status(500).send({ message: "Internal Server Error" });
+        //         } else {
+        //           res.send({ message: "Nail created successfully" });
+        //         }
+        //       }
+        //     );
+        //     break;
+        //   case "anchor":
+        //     anchorCollection.insertOne(
+        //       {
+        //         productID: req.body.id,
+        //         company: req.body.company,
+        //         material: req.body.material,
+        //       },
+        //       (err, result) => {
+        //         if (err) {
+        //           console.log(err);
+        //           res.status(500).send({ message: "Internal Server Error" });
+        //         } else {
+        //           res.send({ message: "Anchor created successfully" });
+        //         }
+        //       }
+        //     );
+        //     break;
+        default:
+          res.status(400).send({ message: "Invalid product type" });
+      }
     });
 
     // app.get("/product/:productType", async (req, res) => {

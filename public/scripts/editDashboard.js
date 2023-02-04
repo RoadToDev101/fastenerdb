@@ -1,5 +1,7 @@
 const createProduct = (productType, productData) => {
   productType = productType.toLowerCase();
+  console.log(productType);
+  console.log(productData);
   return fetch(`/product/${productType}`, {
     method: "POST",
     headers: {
@@ -44,9 +46,17 @@ createProductBtn.onclick = (event) => {
   };
 
   createProduct(productType, productData)
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    })
     .then((data) => {
       console.log(data);
+    })
+    .catch((error) => {
+      console.error(error);
     });
 };
 
