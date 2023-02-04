@@ -1,8 +1,5 @@
-const createProduct = (productType, productData) => {
-  productType = productType.toLowerCase();
-  console.log(productType);
-  console.log(productData);
-  return fetch(`/product/${productType}`, {
+const createProduct = (productData) => {
+  return fetch(`/products`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,8 +8,8 @@ const createProduct = (productType, productData) => {
   });
 };
 
-// const updateProduct = (productType, productData) => {
-//   return fetch(`/product/${productType}/${productData.id}`, {
+// const updateProduct = (id, productData) => {
+//   return fetch(`/products/${id}`, {
 //     method: "PUT",
 //     headers: {
 //       "Content-Type": "application/json",
@@ -21,75 +18,66 @@ const createProduct = (productType, productData) => {
 //   });
 // };
 
-// const deleteProduct = (productType, productId) => {
-//   return fetch(`/product/${productType}/${productId}`, {
+// const deleteProduct = (id) => {
+//   return fetch(`/products/${id}`, {
 //     method: "DELETE",
 //     headers: {
 //       "Content-Type": "application/json",
 //     },
 //   });
 // };
+
 const form = document.getElementById("crudForm");
 const createProductBtn = document.getElementById("createProductBtn");
 createProductBtn.onclick = (event) => {
   event.preventDefault();
   console.log("create product");
+  const modelNumber = document.querySelector("#modelNumber").value;
   const productType = document.querySelector("#productType").value;
-  const productId = document.querySelector("#productIdInput").value;
-  const company = document.querySelector("#companyInput").value;
-  const material = document.querySelector("#materialInput").value;
+  const material = document.querySelector("#material").value;
 
   const productData = {
-    id: productId,
-    company,
+    modelNumber,
+    productType,
     material,
   };
 
-  createProduct(productType, productData)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
-    })
+  createProduct(productData)
+    .then((response) => response.json())
     .then((data) => {
       console.log(data);
-    })
-    .catch((error) => {
-      console.error(error);
     });
 };
-
-// document.querySelector("#updateProduct").addEventListener("submit", (event) => {
+// const updateProductBtn = document.getElementById("updateProductBtn");
+// updateProductBtn.onclick = (event) => {
 //   event.preventDefault();
 
+//   const id = document.querySelector("#productId").value;
+//   const modelNumber = document.querySelector("#modelNumber").value;
 //   const productType = document.querySelector("#productType").value;
-//   const productId = document.querySelector("#productId").value;
-//   const company = document.querySelector("#companyInput").value;
-//   const material = document.querySelector("#materialInput").value;
+//   const material = document.querySelector("#material").value;
 
 //   const productData = {
-//     id: productId,
-//     company,
+//     modelNumber,
+//     productType,
 //     material,
 //   };
 
-//   updateProduct(productType, productData)
+//   updateProduct(id, productData)
 //     .then((response) => response.json())
 //     .then((data) => {
 //       console.log(data);
 //     });
-// });
-
-// document.querySelector("#deleteProduct").addEventListener("submit", (event) => {
+// };
+// const deleteProductBtn = document.getElementById("deleteProductBtn");
+// deleteProductBtn.onclick = (event) => {
 //   event.preventDefault();
 
-//   const productType = document.querySelector("#productType").value;
-//   const productId = document.querySelector("#productId").value;
+//   const id = document.querySelector("#productId").value;
 
-//   deleteProduct(productType, productId)
+//   deleteProduct(id)
 //     .then((response) => response.json())
 //     .then((data) => {
 //       console.log(data);
 //     });
-// });
+// };
