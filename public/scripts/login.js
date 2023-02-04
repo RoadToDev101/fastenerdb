@@ -1,5 +1,5 @@
 document
-  .getElementById("signin-form")
+  .getElementById("login-form")
   .addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -7,7 +7,7 @@ document
     var password = document.getElementById("password").value;
 
     var request = new XMLHttpRequest();
-    request.open("POST", "/signin", true);
+    request.open("POST", "/login", true);
     request.setRequestHeader(
       "Content-Type",
       "application/x-www-form-urlencoded"
@@ -18,7 +18,7 @@ document
         var response = JSON.parse(this.responseText);
 
         if (response.success) {
-          window.location.href = "/editDashboard";
+          window.location.href = "/crud";
         } else {
           alert("Login failed. Please try again.");
         }

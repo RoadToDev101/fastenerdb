@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <!-- Fontawesome CSS -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+
+    <title>Data Table with Search Box</title>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h2 class="text-center mb-3">Data Table with Search Box</h2>
+      <div class="form-group mt-3">
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search..."
+        />
+      </div>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Product List</h3>
+        <button
+          type="button"
+          id="addProductBtn"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#addProductModal"
+        >
+          Add Product
+        </button>
+      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Product Type</th>
+            <th>Model Number</th>
+            <th>Material</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="dataTable">
+          <tr>
+            <td>Screw</td>
+            <td>S123</td>
+            <td>Steel</td>
+            <td>
+              <button
+                class="btn btn-warning mr-2"
+                data-toggle="modal"
+                data-target="#editProductModal"
+              >
+                <i class="fas fa-pen"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Nail</td>
+            <td>N456</td>
+            <td>Iron</td>
+            <td>
+              <button
+                class="btn btn-warning mr-2"
+                data-toggle="modal"
+                data-target="#editProductModal"
+              >
+                <i class="fas fa-pen"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>Anchor</td>
+            <td>A789</td>
+            <td>Brass</td>
+            <td>
+              <button
+                class="btn btn-warning mr-2"
+                data-toggle="modal"
+                data-target="#editProductModal"
+              >
+                <i class="fas fa-pen"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Add Product Modal -->
+    <div
+      class="modal fade"
+      id="addProductModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Add form fields here -->
+            <form id="crudForm">
+              <div class="form-group">
+                <label for="productTypeInpuy">Product Type</label
+                ><select class="form-control" id="productTypeInput">
+                  <option>Screw</option>
+                  <option>Nail</option>
+                  <option>Anchor</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="modelNumberInput">Model Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="modelNumberInput"
+                  placeholder="Enter model number"
+                />
+              </div>
+              <div class="form-group">
+                <label for="materialInput">Material</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="materialInput"
+                  placeholder="Enter material"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" id="addNewProductBtn" class="btn btn-primary">
+              Add new product
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div
+      class="modal fade"
+      id="addProductModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="addProductModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary" id="addProductBtn">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="/scripts/crud.js"></script>
+  </body>
+</html>

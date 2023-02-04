@@ -31,9 +31,18 @@ mongoose
   .catch((error) => console.log(error));
 
 const productSchema = new mongoose.Schema({
-  modelNumber: String,
-  productType: String,
-  material: String,
+  modelNumber: {
+    type: String,
+    unique: true, // `model number` must be unique
+  },
+  productType: {
+    type: String,
+    unique: true, // `product type` must be unique
+  },
+  material: {
+    type: String,
+    unique: true, // `material` must be unique
+  },
 });
 const Product = mongoose.model("Product", productSchema);
 // CREATE
@@ -53,32 +62,38 @@ app.post("/products", (req, res) => {
 });
 
 // READ
-// app.get("/products", (req, res) => {
-//   Product.find()
-//     .then((products) => res.send(products))
-//     .catch((error) => res.send(error));
-// });
+app.get("/products", (req, res) => {
+  Product.find()
+    .then((products) => res.send(products))
+    .catch((error) => res.send(error));
+});
 
 // UPDATE
-// app.put("/products/:id", (req, res) => {
-//   Product.findByIdAndUpdate(
-//     req.params.id,
-//     {
-//       modelNumber: req.body.modelNumber,
-//       productType: req.body.productType,
-//       material: req.body.material,
-//     },
-//     { new: true }
-//   )
-//     .then((product) => res.send(product))
-//     .catch((error) => res.send(error));
-// });
+app.put("/products/:modelNumber", (req, res) => {
+  Product.findByModelNumberAndUpdate(
+    req.params.modelNumber,
+    {
+      modelNumber: req.body.modelNumber,
+      productType: req.body.productType,
+      material: req.body.material,
+    },
+    { new: true }
+  )
+    .then((product) => {
+      res.send(product);
+      console.log(product);
+    })
+    .catch((error) => res.send(error));
+});
 
 // DELETE
-// app.delete("/products/:id", (req, res) => {
-//   Product.findByIdAndRemove(req.params.id)
-//     .then((product) => res.send(product))
-//     .catch((error) => res.send(error));
-// });
+app.delete("/products/:modelNumber", (req, res) => {
+  Product.findByModelNumberAndRemove(req.params.modelNumber)
+    .then((product) => {
+      res.send(product);
+      console.log(product);
+    })
+    .catch((error) => res.send(error));
+});
 const port = 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
