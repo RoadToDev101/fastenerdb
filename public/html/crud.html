@@ -30,7 +30,6 @@
       integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
       crossorigin="anonymous"
     />
-
     <title>Data Table with Search Box</title>
   </head>
   <body>
@@ -59,65 +58,14 @@
       <table class="table table-bordered">
         <thead>
           <tr>
+            <th>UUID</th>
             <th>Product Type</th>
             <th>Model Number</th>
             <th>Material</th>
             <th>Action</th>
           </tr>
         </thead>
-        <tbody id="dataTable">
-          <tr>
-            <td>Screw</td>
-            <td>S123</td>
-            <td>Steel</td>
-            <td>
-              <button
-                class="btn btn-warning mr-2"
-                data-toggle="modal"
-                data-target="#editProductModal"
-              >
-                <i class="fas fa-pen"></i>
-              </button>
-              <button class="btn btn-danger">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Nail</td>
-            <td>N456</td>
-            <td>Iron</td>
-            <td>
-              <button
-                class="btn btn-warning mr-2"
-                data-toggle="modal"
-                data-target="#editProductModal"
-              >
-                <i class="fas fa-pen"></i>
-              </button>
-              <button class="btn btn-danger">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-          <tr>
-            <td>Anchor</td>
-            <td>A789</td>
-            <td>Brass</td>
-            <td>
-              <button
-                class="btn btn-warning mr-2"
-                data-toggle="modal"
-                data-target="#editProductModal"
-              >
-                <i class="fas fa-pen"></i>
-              </button>
-              <button class="btn btn-danger">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
+        <tbody id="dataTable"></tbody>
       </table>
     </div>
     <!-- Add Product Modal -->
@@ -144,9 +92,9 @@
           </div>
           <div class="modal-body">
             <!-- Add form fields here -->
-            <form id="crudForm">
+            <form id="addProductForm">
               <div class="form-group">
-                <label for="productTypeInpuy">Product Type</label
+                <label for="productTypeInput">Product Type</label
                 ><select class="form-control" id="productTypeInput">
                   <option>Screw</option>
                   <option>Nail</option>
@@ -188,44 +136,84 @@
         </div>
       </div>
     </div>
-    <!-- <div
+
+    <!-- Edit Product Modal -->
+    <div
       class="modal fade"
-      id="addProductModal"
+      id="editProductModal"
       tabindex="-1"
       role="dialog"
-      aria-labelledby="addProductModalLabel"
+      aria-labelledby="editProductModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary" id="addProductBtn">
-              Save changes
-            </button>
-          </div>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Edit form fields here -->
+          <form id="editProductForm">
+            <div class="form-group">
+              <label for="editIdInput">UUID</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editIdInput"
+                value=""
+              />
+            </div>
+            <div class="form-group">
+              <label for="editProductTypeInput">Product Type</label
+              ><select class="form-control" id="editProductTypeInput">
+                <option>Screw</option>
+                <option>Nail</option>
+                <option>Anchor</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editModelNumberInput">Model Number</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editModelNumberInput"
+                placeholder="Enter model number"
+              />
+            </div>
+            <div class="form-group">
+              <label for="editMaterialInput">Material</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editMaterialInput"
+                placeholder="Enter material"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" id="saveEditProductBtn" class="btn btn-primary">
+            Save changes
+          </button>
         </div>
       </div>
-    </div> -->
+    </div>
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
       src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -242,7 +230,46 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script>
-
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      //Query data from db to Dynamically Update data table
+      $(document).ready(function () {
+        $.ajax({
+          url: "/products",
+          method: "GET",
+          success: function (data) {
+            let html = "";
+            data.forEach(function (product) {
+              html += `
+                <tr>
+                  <th>${product._id}</th>
+                  <td>${product.productType}</td>
+                  <td>${product.modelNumber}</td>
+                  <td>${product.material}</td>
+                  <td>
+                    <button
+                      id="editProductBtn"
+                      class="btn btn-warning mr-2"
+                      data-toggle="modal"
+                      data-target="#editProductModal"
+                    >
+                      <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="btn btn-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              `;
+            });
+            $("#dataTable").html(html);
+          },
+          error: function (error) {
+            console.log(error);
+          },
+        });
+      });
+    </script>
     <script src="/scripts/crud.js"></script>
   </body>
 </html>

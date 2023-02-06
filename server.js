@@ -34,19 +34,21 @@ const productSchema = new mongoose.Schema({
   modelNumber: {
     type: String,
     unique: true, // `model number` must be unique
+    required: true,
   },
   productType: {
     type: String,
-    unique: true, // `product type` must be unique
+    required: true,
   },
   material: {
     type: String,
-    unique: true, // `material` must be unique
+    required: true,
   },
 });
 const Product = mongoose.model("Product", productSchema);
 // CREATE
 app.post("/products", (req, res) => {
+  console.log(req.body);
   const newProduct = new Product({
     modelNumber: req.body.modelNumber,
     productType: req.body.productType,
@@ -56,7 +58,7 @@ app.post("/products", (req, res) => {
     .save()
     .then((product) => {
       res.send(product);
-      console.log(product);
+      console.log(`New product have been added: ${product.modelNumber}`);
     })
     .catch((error) => res.send(error));
 });
@@ -69,9 +71,9 @@ app.get("/products", (req, res) => {
 });
 
 // UPDATE
-app.put("/products/:modelNumber", (req, res) => {
-  Product.findByModelNumberAndUpdate(
-    req.params.modelNumber,
+app.put("/products/:_id", (req, res) => {
+  Product.findByIdAndUpdate(
+    req.params._id,
     {
       modelNumber: req.body.modelNumber,
       productType: req.body.productType,
@@ -81,17 +83,17 @@ app.put("/products/:modelNumber", (req, res) => {
   )
     .then((product) => {
       res.send(product);
-      console.log(product);
+      console.log(`A product have been updated: ${product.modelNumber}`);
     })
     .catch((error) => res.send(error));
 });
 
 // DELETE
-app.delete("/products/:modelNumber", (req, res) => {
-  Product.findByModelNumberAndRemove(req.params.modelNumber)
+app.delete("/products/:_id", (req, res) => {
+  Product.findByIdAndRemove(req.params._id)
     .then((product) => {
       res.send(product);
-      console.log(product);
+      console.log(`A product have been deleted: ${product.modelNumber}`);
     })
     .catch((error) => res.send(error));
 });
