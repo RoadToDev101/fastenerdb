@@ -1,0 +1,44 @@
+<!--include header-->
+<%- include('include/_header') %>
+<!--include header-->
+<!-- Main -->
+<main id="site-main">
+  <div class="container mt-5">
+    <h2 class="text-center mb-3">Data Table with Search Box</h2>
+    <div class="form-group mt-3">
+      <input
+        type="text"
+        id="searchInput"
+        class="form-control"
+        placeholder="Search..."
+      />
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Product List</h3>
+      <a href="/addProduct" class="btn btn-outline-primary">Add New Product</a>
+    </div>
+    <form action="/" method="post">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>UUID</th>
+              <th>Product Type</th>
+              <th>Model Number</th>
+              <th>Material</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="dataTable" class="table-group-divider">
+            <%- include('include/_show') %>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+</main>
+<!-- Main -->
+<!--include footer-->
+<%- include('include/_footer') %>
+<!--include footer-->

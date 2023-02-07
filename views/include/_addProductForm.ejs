@@ -1,0 +1,38 @@
+<!-- Form -->
+<form action="/api/products" method="post" id="addProductForm">
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="productTypeInput">Product Type</label
+        ><select class="form-control" id="productTypeInput">
+          <option>Screw</option>
+          <option>Nail</option>
+          <option>Anchor</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="modelNumberInput">Model Number</label>
+        <input
+          type="text"
+          class="form-control"
+          id="modelNumberInput"
+          placeholder="Enter model number"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="materialInput">Material</label>
+    <select class="form-control" id="materialInput">
+      <option>Carbon Steel</option>
+      <option>304 Stainless Steel</option>
+      <option>316 Stainless Steel</option>
+    </select>
+  </div>
+  <button type="submit" id="addNewProductBtn" class="btn btn-primary">
+    Add New Product
+  </button>
+</form>
+<!-- Form -->
