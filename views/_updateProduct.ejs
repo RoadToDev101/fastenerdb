@@ -1,0 +1,72 @@
+<!--include header-->
+<%- include('include/_header') %>
+<!--include header-->
+<!-- Main -->
+<main id="site-main">
+  <div class="container mt-5">
+    <div class="container">
+      <div class="justify-content-between d-flex">
+        <div class="filter">
+          <a href="/"><i class="fas fa-angle-double-left"></i>All Products</a>
+        </div>
+      </div>
+    </div>
+    <div class="form-title text-center">
+      <h2 class="text-dark">Update Product</h2>
+    </div>
+    <!-- Form -->
+    <form method="post" id="updateProductForm">
+      <div class="form-group">
+        <label for="modelUUIDInput">UUID</label>
+        <input
+          type="text"
+          value="<%= product._id %>"
+          class="form-control"
+          id="modelUUIDInput"
+        />
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="productTypeInput">Product Type</label
+            ><select class="form-control" id="productTypeInput">
+              <option value="<%= product.productType %>"><%= product.productType %></option>
+              <option>Screw</option>
+              <option>Nail</option>
+              <option>Anchor</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="modelNumberInput">Model Number</label>
+            <input
+              type="text"
+              class="form-control"
+              value="<%= product.modelNumber %>"
+              id="modelNumberInput"
+              placeholder="Enter model number"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="materialInput">Material</label>
+        <select class="form-control" id="materialInput">
+          <option value="<%= product.material %>"><%= product.material %></option>
+          <option>Carbon Steel</option>
+          <option>304 Stainless Steel</option>
+          <option>316 Stainless Steel</option>
+        </select>
+      </div>
+      <button type="submit" id="saveChangesProductBtn" class="btn btn-primary">
+        Save Changes
+      </button>
+    </form>
+    <!-- Form -->
+  </div>
+</main>
+<!-- Main -->
+<!--include footer-->
+<%- include('include/_footer') %>
+<!--include footer-->

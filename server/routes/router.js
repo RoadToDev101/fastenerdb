@@ -14,7 +14,19 @@ router.get("/", services.homeRoute);
  *@description add products route
  * @method GET /
  */
-router.get("/addProduct", services.addProductRoute);
+router.get("/add-product", services.addProductRoute);
+
+/**
+ * @description update products route
+ * @method GET /update-product
+ */
+router.get("/update-product", services.updateProductRoute);
+
+/**
+ * @description show a product route
+ * @method GET /show-product
+ */
+router.get("/view-product", services.viewProductRoute);
 
 // API
 router.post("/api/users", userController.create);
@@ -25,9 +37,9 @@ router.delete("/api/users/:userId", userController.delete);
 
 router.post("/api/products", productController.create);
 router.get("/api/products", productController.findAll);
-router.get("/api/products/:productId", productController.findOne);
-router.put("/api/products/:productId", productController.update);
-router.put("/api/products/:modelNumber", productController.update);
-router.delete("/api/products/:productId", productController.delete);
+router.get("/api/products/:id", productController.findOne);
+router.put("/api/products/:id", productController.updateByID);
+router.put("/api/products/:modelNumber", productController.updateByModelNumber);
+router.delete("/api/products/:id", productController.delete);
 
 module.exports = router;

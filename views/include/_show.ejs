@@ -1,20 +1,18 @@
 <% for(var i = 0;i<products.length;i++){ %>
   <tr data-id="<%= products[i]._id %>">
     <th><%= i+1 %></th>
-    <th><%= products[i]._id %></th>
+    <th style="display: none"><%= products[i]._id %></th>
     <td><%= products[i].productType %></td>
     <td><%= products[i].modelNumber %></td>
     <td><%= products[i].material %></td>
-    <td>
-      <a class="btn btn-info mr-2" href="/showProduct/<%= products[i]._id %>">
+    <td class="action">
+      <a class="btn btn-info mr-2" href="/view-product?id=<%= products[i]._id %>">
         <i class="fas fa-eye"></i>
       </a>
-      <a class="btn btn-warning" href="/updateProduct/<%= products[i]._id %>">
+      <a class="btn btn-warning" href="/update-product?id=<%= products[i]._id %>">
         <i class="fas fa-edit"></i>
       </a>
-      <button id="deleteProductBtn" class="btn btn-danger">
-        <i class="fas fa-trash"></i>
-      </button>
+      <a class="btn btn-danger delete" data-id="<%= products[i]._id %>"><i class="fas fa-trash"></i></a>
     </td>
   </tr>
 <% } %>

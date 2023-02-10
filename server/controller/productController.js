@@ -45,60 +45,68 @@ exports.findAll = (req, res) => {
   });
 };
 
-// Find a single product with a productId
+// Find a single product with a id
 exports.findOne = (req, res) => {
-  Product.findById(req.params.productId, (err, data) => {
+  Product.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found product with id ${req.params.productId}.`,
+          message: `Not found product with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving product with id " + req.params.productId,
+          message: "Error retrieving product with id " + req.params.id,
         });
       }
     } else res.send(data);
   });
 };
 
-// Update product with the specified productId in the request
-exports.update = (req, res) => {
+// Update product with the specified id in the request
+exports.updateByID = (req, res) => {
   // Validate Request
   if (!req.body) {
     return res.status(400).send({
       message: "Content can not be empty!",
     });
   }
-
-  // Exclude the _id field from the update
-  const { _id, ...updatedProduct } = req.body;
-
-  Product.findByIdAndUpdate(
-    req.params.productId,
-    { $set: updatedProduct },
-    { new: true },
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        if (err.kind === "not_found") {
-          return res.status(404).send({
-            message: `Not found product with id ${req.params.productId}.`,
-          });
-        } else {
-          return res.status(500).send({
-            message: "Error updating product with id " + req.params.productId,
-          });
+  const id = req.params.id;
+  // Find the product with the specified id
+  Product.findById(id, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({
+        message: "Error finding product with id " + id,
+      });
+    } else if (!data) {
+      res.status(404).send({
+        message: "Product not found with id " + id,
+      });
+    } else {
+      // Update the product with the specified id
+      Product.findByIdAndUpdate(
+        id,
+        req.body,
+        { useFindAndModify: false },
+        (err, data) => {
+          if (err) {
+            console.error(err);
+            res.status(500).send({
+              message: "Error updating product with id " + id,
+            });
+          } else {
+            console.log(
+              `Successful UPDATE! ID: ${data.id}, Model Number: ${data.modelNumber}`
+            );
+            res.send(data);
+          }
         }
-      } else {
-        console.log("Successful update", data);
-        return res.send(data);
-      }
+      );
     }
-  );
+  });
 };
 
-exports.update = (req, res) => {
+exports.updateByModelNumber = (req, res) => {
   // Validate Request
   if (!req.body) {
     return res.status(400).send({
@@ -125,17 +133,17 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a product with the specified productId in the request
+// Delete a product with the specified id in the request
 exports.delete = (req, res) => {
-  Product.findByIdAndDelete(req.params.productId, (err, data) => {
+  Product.findByIdAndDelete(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found product with id ${req.params.productId}.`,
+          message: `Not found product with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Could not delete product with id " + req.params.productId,
+          message: "Could not delete product with id " + req.params.id,
         });
       }
     } else res.send({ message: `product was deleted successfully!` });

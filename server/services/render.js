@@ -1,5 +1,6 @@
 const axios = require("axios");
 
+// Render home page
 exports.homeRoute = (req, res) => {
   // Make a get request to /api/products
   axios
@@ -13,10 +14,37 @@ exports.homeRoute = (req, res) => {
     });
 };
 
+// Render add product page
 exports.addProductRoute = (req, res) => {
   res.render("_addProduct");
 };
 
-exports.updateProduct = (req, res) => {
-  res.render("_updateProduct");
+// Update a product
+exports.updateProductRoute = (req, res) => {
+  // Make a get request to /api/products
+  axios
+    .get(`http://localhost:3000/api/products/${req.query.id}`)
+    // Get the product with the id in the url
+    .then(function (productData) {
+      res.render("_updateProduct", { product: productData.data });
+      //console.log(productData.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+
+// Render show product page
+exports.viewProductRoute = (req, res) => {
+  // Make a get request to /api/products
+  axios
+    .get(`http://localhost:3000/api/products/${req.query.id}`)
+    // Get the product with the id in the url
+    .then(function (productData) {
+      res.render("_viewProduct", { product: productData.data });
+      //console.log(productData.data);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 };
