@@ -1,10 +1,15 @@
 const axios = require("axios");
+const dotenv = require("dotenv");
+
+// Load env vars
+dotenv.config({ path: "config.env" });
+const PORT = process.env.PORT || 8080;
 
 // Render home page
 exports.homeRoute = (req, res) => {
   // Make a get request to /api/products
   axios
-    .get("http://localhost:3000/api/products")
+    .get(`http://localhost:${PORT}/api/products`)
     .then(function (response) {
       // console.log(response);
       res.render("index", { products: response.data });
@@ -23,7 +28,7 @@ exports.addProductRoute = (req, res) => {
 exports.updateProductRoute = (req, res) => {
   // Make a get request to /api/products
   axios
-    .get(`http://localhost:3000/api/products/${req.query.id}`)
+    .get(`http://localhost:${PORT}/api/products/${req.query.id}`)
     // Get the product with the id in the url
     .then(function (productData) {
       res.render("_updateProduct", { product: productData.data });
@@ -38,7 +43,7 @@ exports.updateProductRoute = (req, res) => {
 exports.viewProductRoute = (req, res) => {
   // Make a get request to /api/products
   axios
-    .get(`http://localhost:3000/api/products/${req.query.id}`)
+    .get(`http://localhost:${PORT}/api/products/${req.query.id}`)
     // Get the product with the id in the url
     .then(function (productData) {
       res.render("_viewProduct", { product: productData.data });

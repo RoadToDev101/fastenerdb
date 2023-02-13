@@ -84,27 +84,33 @@ const featureSchema = new mongoose.Schema({
       ref: "PointType",
     },
   },
-  shankType: {
-    [shankTypeId]: {
-      type: mongoose.Types.ObjectId,
-      ref: "ShankType",
+  shankType: [
+    {
+      shankTypeId: {
+        type: mongoose.Types.ObjectId,
+        ref: "ShankType",
+        unique: true,
+      },
     },
-  },
-  threadType: {
-    [threadTypeId]: {
-      type: mongoose.Types.ObjectId,
-      ref: "ThreadType",
+  ],
+  threadType: [
+    {
+      threadTypeId: {
+        type: mongoose.Types.ObjectId,
+        ref: "ThreadType",
+        unique: true,
+      },
+      topThreadAngle: {
+        type: Number,
+      },
+      bottomThreadAngle: {
+        type: Number,
+      },
     },
-    topThreadAngle: {
-      type: Number,
-    },
-    bottomThreadAngle: {
-      type: Number,
-    },
-  },
+  ],
 });
 
-const applicationsSchema = new mongoose.Schema({
+const applicationSchema = new mongoose.Schema({
   applicationId: {
     type: String,
     required: true,
@@ -152,16 +158,20 @@ const materialSchema = new mongoose.Schema({
 const productionDrawingSchema = new mongoose.Schema({
   drawingName: {
     type: String,
+    required: true,
   },
   version: {
     type: String,
+    required: true,
   },
   file: {
     type: Buffer,
+    required: true,
   },
   revisedDate: {
     type: Date,
     default: Date.now,
+    required: true,
   },
 });
 
@@ -274,9 +284,9 @@ const allowableLoadSchema = new mongoose.Schema({
   woodToWood: {
     withdrawal: [wtwWithdrawalLoadSchema],
     shear: [wtwShearLoadSchema],
-    steelToWood: {
-      shear: [stwShearLoadSchema],
-    },
+  },
+  steelToWood: {
+    shear: [stwShearLoadSchema],
   },
 });
 
@@ -288,6 +298,28 @@ const modelSchema = new mongoose.Schema({
   },
   features: featureSchema,
   commercialDimensions: commercialDimensionSchema,
+  materialId: {
+    type: mongoose.Types.ObjectId,
+    ref: "Material",
+    required: true,
+  },
+  coatings: [
+    {
+      coatingId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Coating",
+        required: true,
+      },
+      layer: {
+        type: Number,
+        unique: true,
+        required: true,
+      },
+      thickness: {
+        type: Number,
+      },
+    },
+  ],
   SKUs: [SKUSchema],
   mechanicalProperties: mechanicalPropertiesSchema,
   screwAllowableLoads: allowableLoadSchema,
@@ -308,33 +340,21 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   models: [modelSchema],
-  materialId: {
-    type: mongoose.Types.ObjectId,
-    ref: "Material",
-    required: true,
-  },
-  coatings: {
-    coatingId: {
+  productionDrawingID: [
+    {
       type: mongoose.Types.ObjectId,
-      ref: "Coating",
+      ref: "ProductionDrawing",
       required: true,
     },
-    layer: {
-      type: Number,
-      unique: true,
-      required: true,
-    },
-    thickness: {
-      type: Number,
-    },
-  },
-  productionDrawings: [productionDrawingSchema],
+  ],
   codeReports: [codeReportSchema],
-  applicationsID: {
-    type: mongoose.Types.ObjectId,
-    ref: "Applications",
-    required: true,
-  },
+  applicationID: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Application",
+      required: true,
+    },
+  ],
 });
 
 const roleSchema = new mongoose.Schema({
@@ -372,13 +392,17 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+const ProductionDrawing = mongoose.model(
+  "ProductionDrawing",
+  productionDrawingSchema
+);
 const ThreadType = mongoose.model("ThreadType", threadTypeSchema);
 const HeadType = mongoose.model("HeadType", headTypeSchema);
 const DriveType = mongoose.model("DriveType", driveTypeSchema);
 const PointType = mongoose.model("PointType", pointTypeSchema);
 const ShankType = mongoose.model("ShankType", shankTypeSchema);
 const Role = mongoose.model("Role", roleSchema);
-const Application = mongoose.model("Applications", applicationsSchema);
+const Application = mongoose.model("Application", applicationSchema);
 const Coating = mongoose.model("Coating", coatingSchema);
 const Material = mongoose.model("Material", materialSchema);
 const Product = mongoose.model("Product", productSchema);
@@ -386,6 +410,7 @@ const User = mongoose.model("User", userSchema);
 
 module.exports = {
   Product,
+  ProductionDrawing,
   ThreadType,
   HeadType,
   DriveType,
