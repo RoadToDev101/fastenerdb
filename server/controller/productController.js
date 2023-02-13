@@ -106,33 +106,6 @@ exports.updateByID = (req, res) => {
   });
 };
 
-exports.updateByModelNumber = (req, res) => {
-  // Validate Request
-  if (!req.body) {
-    return res.status(400).send({
-      message: "Content can not be empty!",
-    });
-  }
-  // Update product with the specified modelNumber in the request
-  Product.findOneAndUpdate(
-    { modelNumber: req.body.modelNumber },
-    { $set: req.body },
-    { new: true },
-    (err, data) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send({
-          message:
-            "Error updating product with modelNumber " + req.body.modelNumber,
-        });
-      } else {
-        console.log("Successful update", data);
-        res.send(data);
-      }
-    }
-  );
-};
-
 // Delete a product with the specified id in the request
 exports.delete = (req, res) => {
   Product.findByIdAndDelete(req.params.id, (err, data) => {

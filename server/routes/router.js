@@ -39,7 +39,6 @@ router.post("/api/products", productController.create);
 router.get("/api/products", productController.findAll);
 router.get("/api/products/:id", productController.findOne);
 router.put("/api/products/:id", productController.updateByID);
-router.put("/api/products/:modelNumber", productController.updateByModelNumber);
 router.delete("/api/products/:id", productController.delete);
 
 module.exports = router;
