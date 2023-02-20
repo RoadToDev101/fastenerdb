@@ -32,17 +32,21 @@ exports.create = (req, res) => {
 
 // Find all products
 exports.findAll = (req, res) => {
-  Product.find({}, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving products.",
-      });
-    else {
-      res.send(data);
-      console.log(`All Products Retrieved!`);
+  Product.find(
+    {},
+    { modelNumber: 1, productType: 1, material: 1 },
+    (err, data) => {
+      if (err)
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while retrieving products.",
+        });
+      else {
+        res.send(data);
+        console.log(`All Products Retrieved!`);
+      }
     }
-  });
+  );
 };
 
 // Find a single product with a id

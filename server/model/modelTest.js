@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const threadTypeSchema = new mongoose.Schema({
-  threadTypeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   threadTypeName: {
     type: String,
     required: true,
@@ -14,11 +9,6 @@ const threadTypeSchema = new mongoose.Schema({
 });
 
 const headTypeSchema = new mongoose.Schema({
-  headTypeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   headTypeName: {
     type: String,
     required: true,
@@ -27,11 +17,6 @@ const headTypeSchema = new mongoose.Schema({
 });
 
 const driveTypeSchema = new mongoose.Schema({
-  driveTypeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   driveTypeName: {
     type: String,
     required: true,
@@ -40,11 +25,6 @@ const driveTypeSchema = new mongoose.Schema({
 });
 
 const pointTypeSchema = new mongoose.Schema({
-  pointTypeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   pointTypeName: {
     type: String,
     required: true,
@@ -53,11 +33,6 @@ const pointTypeSchema = new mongoose.Schema({
 });
 
 const shankTypeSchema = new mongoose.Schema({
-  shankTypeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   shankTypeName: {
     type: String,
     required: true,
@@ -111,11 +86,6 @@ const featureSchema = new mongoose.Schema({
 });
 
 const applicationSchema = new mongoose.Schema({
-  applicationId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   applicationName: {
     type: String,
     required: true,
@@ -127,11 +97,6 @@ const applicationSchema = new mongoose.Schema({
 });
 
 const coatingSchema = new mongoose.Schema({
-  coatingId: {
-    type: String,
-    unique: true,
-    required: true,
-  },
   coatingName: {
     type: String,
     unique: true,
@@ -140,11 +105,6 @@ const coatingSchema = new mongoose.Schema({
 });
 
 const materialSchema = new mongoose.Schema({
-  materialId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   materialName: {
     type: String,
     required: true,
@@ -358,11 +318,6 @@ const productSchema = new mongoose.Schema({
 });
 
 const roleSchema = new mongoose.Schema({
-  roleID: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   roleName: {
     type: String,
     required: true,
