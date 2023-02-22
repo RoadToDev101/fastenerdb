@@ -41,4 +41,5 @@ router.get("/api/products/:id", productController.findOne);
 router.put("/api/products/:id", productController.updateByID);
 router.delete("/api/products/:id", productController.delete);
 
+router.get("/api/add-product", productController.findAllProductComponents);
 module.exports = router;

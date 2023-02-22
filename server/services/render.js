@@ -21,7 +21,35 @@ exports.homeRoute = (req, res) => {
 
 // Render add product page
 exports.addProductRoute = (req, res) => {
-  res.render("_addProduct");
+  axios
+    .get(`http://localhost:${PORT}/api/add-product`)
+    .then(function (response) {
+      // Destructure the response data to get the threadTypes, headTypes, driveTypes, pointTypes, shankTypes, coatings, materials and applications
+      const {
+        threadTypes,
+        headTypes,
+        driveTypes,
+        pointTypes,
+        shankTypes,
+        coatings,
+        materials,
+        applications,
+      } = response.data;
+      //console.log(response.data);
+      res.render("_addProduct", {
+        threadTypes,
+        headTypes,
+        driveTypes,
+        pointTypes,
+        shankTypes,
+        coatings,
+        materials,
+        applications,
+      });
+    })
+    .catch((err) => {
+      res.send(err);
+    });
 };
 
 // Update a product

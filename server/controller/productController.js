@@ -1,4 +1,15 @@
-const { Product } = require("../model/model");
+const {
+  Product,
+  ProductionDrawing,
+  ThreadType,
+  HeadType,
+  DriveType,
+  PointType,
+  ShankType,
+  Material,
+  Coating,
+  Application,
+} = require("../model/model.js");
 
 // Create and save product into the database
 exports.create = (req, res) => {
@@ -9,23 +20,113 @@ exports.create = (req, res) => {
     });
   }
 
-  // Product object to be created
-  const newProduct = new Product({
-    modelNumber: req.body.modelNumber,
+  const newModel = new Product({
     productType: req.body.productType,
-    material: req.body.material,
+    modelName: req.body.modelName,
+    company: req.body.company,
+    models: [
+      {
+        modelNumber: req.body.modelNumber,
+        features: {
+          headType: { headTypeId: req.body.headTypeId },
+          driveType: { driveTypeId: req.body.driveTypeId },
+          pointType: { pointTypeId: req.body.pointTypeId },
+          shankType: [{ shankTypeId: req.body.shankTypeId }],
+          threadType: [
+            {
+              threadTypeId: req.body.threadTypeId,
+              topThreadAngle: req.body.topThreadAngle,
+              bottomThreadAngle: req.body.bottomThreadAngle,
+            },
+          ],
+        },
+        commercialDimensions: {
+          overallLength: req.body.overallLength,
+          size: req.body.size,
+          headDiameter: req.body.headDiameter,
+          threadLength: req.body.threadLength,
+          shankDiameter: req.body.shankDiameter,
+          nailGauge: req.body.nailGauge,
+        },
+        materialId: req.body.materialId,
+        coatings: [{ coatingId: req.body.coatingId, layer: req.body.layer }],
+        SKUs: [
+          {
+            SKUcode: req.body.SKUcode,
+            packagingQuantity: req.body.packagingQuantity,
+            isCollated: req.body.isCollated,
+          },
+        ],
+        mechanicalProperties: {
+          yieldStrength: req.body.yieldStrength,
+          tensionStrength: req.body.tensionStrength,
+          shearStrength: req.body.shearStrength,
+          torsionalStrength: req.body.torsionalStrength,
+          coreHardness: req.body.coreHardness,
+          surfaceHardness: req.body.surfaceHardness,
+        },
+        screwAllowableLoads: {
+          woodToWood: {
+            withdrawal: [
+              {
+                minEmbedmentThreadLength: req.body.minEmbedmentThreadLength,
+                load: {
+                  lowerLoad: req.body.lowerLoad,
+                  upperLoad: req.body.upperLoad,
+                },
+              },
+            ],
+            shear: [
+              {
+                woodSideMemberThickness: req.body.woodSideMemberThickness,
+                load: {
+                  lowerLoad: req.body.lowerLoad,
+                  upperLoad: req.body.upperLoad,
+                },
+              },
+            ],
+          },
+          steelToWood: {
+            shear: [
+              {
+                steelSideMemberThickness: req.body.steelSideMemberThickness,
+                load: {
+                  lowerLoad: req.body.lowerLoad,
+                  upperLoad: req.body.upperLoad,
+                },
+              },
+            ],
+          },
+        },
+      },
+    ],
+    productionDrawingID: [
+      {
+        productionDrawingId: req.body.productionDrawingId,
+        revision: req.body.revision,
+        revisionDate: req.body.revisionDate,
+      },
+    ],
+    codeReports: [
+      {
+        code: req.body.code,
+        file: req.body.file,
+        revisedDate: req.body.revisedDate,
+      },
+    ],
+    applicationID: [{ applicationId: req.body.applicationId }],
   });
 
   // Create a new product into the database
-  Product.create(newProduct, (err, data) => {
-    if (err)
+  newModel.save((err, savedModel) => {
+    if (err) {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the product.",
       });
-    else {
-      res.send(data);
-      console.log(`New Product Created! Product: ${newProduct.modelNumber}`);
+    } else {
+      res.send(savedModel);
+      console.log(`New Product Created! Product: ${savedModel.modelNumber}`);
     }
   });
 };
@@ -100,7 +201,7 @@ exports.updateByID = (req, res) => {
             });
           } else {
             console.log(
-              `Successful UPDATE! ID: ${data.id}, Model Number: ${data.modelNumber}`
+              `Successful UPDATE! ID: ${data.id}, Model Name: ${data.modelName}`
             );
             res.send(data);
           }
@@ -125,4 +226,37 @@ exports.delete = (req, res) => {
       }
     } else res.send({ message: `product was deleted successfully!` });
   });
+};
+
+//Find all thread types, head types, drive types, point types, shank types, coatings, materials and applications. Use async try catch to handle errors
+exports.findAllProductComponents = (req, res) => {
+  async function findAllProductComponents() {
+    try {
+      const threadTypes = await ThreadType.find({});
+      const headTypes = await HeadType.find({});
+      const driveTypes = await DriveType.find({});
+      const pointTypes = await PointType.find({});
+      const shankTypes = await ShankType.find({});
+      const coatings = await Coating.find({});
+      const materials = await Material.find({});
+      const applications = await Application.find({});
+      res.send({
+        threadTypes,
+        headTypes,
+        driveTypes,
+        pointTypes,
+        shankTypes,
+        coatings,
+        materials,
+        applications,
+      });
+    } catch (err) {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Some error occurred while retrieving product components.",
+      });
+    }
+  }
+  findAllProductComponents();
 };

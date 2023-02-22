@@ -1,38 +1,208 @@
 <!-- Form -->
 <form action="/api/products" method="post" id="addProductForm">
-  <div class="row">
-    <div class="col">
-      <div class="form-group">
-        <label for="productTypeInput">Product Type</label
-        ><select class="form-control" id="productTypeInput">
-          <option>Screw</option>
-          <option>Nail</option>
-          <option>Anchor</option>
-        </select>
+  <!-- HTML for the dropdown container -->
+  <div class="form-container">
+    <div class="form-section">
+      <button class="section-header">General Information</button>
+      <div class="section-content">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="productTypeInput">Product Type</label
+              ><select
+                class="form-control"
+                id="productTypeInput"
+                name="productType"
+                required
+              >
+                <option value="" disabled selected hidden>
+                  Select Product Type
+                </option>
+                <option value="Screw">Screw</option>
+                <option value="Nail">Nail</option>
+                <option value="Anchor">Anchor</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="modelNameInput">Model Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="modelNameInput"
+                name="modelName"
+                placeholder="Enter model name"
+                required
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label for="companyInput">Company</label>
+            <select
+              class="form-control"
+              id="companyInput"
+              name="company"
+              required
+            >
+              <option value="" disabled selected hidden>Select Company</option>
+              <option value="Simpson Strong-Tie">Simpson Strong-Tie</option>
+              <option value="Hilti">Hilti</option>
+              <option value="Dewalt">Dewalt</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="modelNumberInput">Model Number</label>
-        <input
-          type="text"
-          class="form-control"
-          id="modelNumberInput"
-          placeholder="Enter model number"
-        />
+
+    <div class="form-section">
+      <button class="section-header">Material/Coatings</button>
+      <div class="section-content">
+        <div class="form-group">
+          <label for="materialInput">Material</label>
+          <select
+            class="form-control"
+            id="materialInput"
+            name="materialId"
+            required
+          >
+            <option value="" disabled selected hidden>Select Material</option>
+            <% materials.forEach((material) => { %>
+            <option value="<%= material._id %>">
+              <%= material.materialName %>
+            </option>
+            <% }); %>
+          </select>
+        </div>
       </div>
     </div>
+
+    <div class="form-section">
+      <button class="section-header">Features</button>
+      <div class="section-content">
+        <div class="form-group">
+          <label for="headTypeInput">Head Type</label>
+          <select
+            class="form-control"
+            id="headTypeInput"
+            name="headTypeId"
+            required
+          >
+            <option value="" disabled selected hidden>Select Head Type</option>
+            <% headTypes.forEach((headType) => { %>
+            <option value="<%= headType._id %>">
+              <%= headType.headTypeName %>
+            </option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="driveTypeInput">Drive Type</label>
+          <select
+            class="form-control"
+            id="driveTypeInput"
+            name="driveTypeId"
+            required
+          >
+            <option value="" disabled selected hidden>Select Drive Type</option>
+            <% driveTypes.forEach((driveType) => { %>
+            <option value="<%= driveType._id %>">
+              <%= driveType.driveTypeName %>
+            </option>
+            <% }); %>
+          </select>
+        </div>
+        <div class="multiselect form-group">
+          <div class="selectBox" onclick="showCheckboxes()">
+            <label for="threadTypeInput">Thread Type</label>
+            <select class="form-control">
+              <option>Select thread types</option>
+            </select>
+            <div class="overSelect"></div>
+          </div>
+          <div id="checkboxes">
+            <% threadTypes.forEach((threadType) => { %>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="<%= threadType._id %>"
+                name="threadType"
+                value="<%= threadType._id %>"
+              />
+              <label class="form-check-label" for="<%= threadType._id %>">
+                <%= threadType.threadTypeName %>
+              </label>
+              <input
+                class="form-control"
+                type="number"
+                name="topThreadAngle"
+                placeholder="Top Thread Angle"
+              />
+              <input
+                class="form-control"
+                type="number"
+                name="bottomThreadAngle"
+                placeholder="Bottom Thread Angle"
+              />
+            </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <button class="section-header">Production Drawings</button>
+      <div class="section-content">
+        <div class="form-group">
+          <label for="drawingNameInput">Drawing Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="drawingNameInput"
+            name="drawingName"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="versionInput">Version</label>
+          <input
+            type="text"
+            class="form-control"
+            id="versionInput"
+            name="version"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="fileInput">File</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="fileInput"
+            name="file"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="revisedDateInput">Revised Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="revisedDateInput"
+            name="revisedDate"
+            value="<%= Date.now() %>"
+            required
+          />
+        </div>
+      </div>
+    </div>
+    <button type="submit" id="addNewProductBtn" class="btn btn-primary">
+      Add New Product
+    </button>
   </div>
-  <div class="form-group">
-    <label for="materialInput">Material</label>
-    <select class="form-control" id="materialInput">
-      <option>Carbon Steel</option>
-      <option>304 Stainless Steel</option>
-      <option>316 Stainless Steel</option>
-    </select>
-  </div>
-  <button type="submit" id="addNewProductBtn" class="btn btn-primary">
-    Add New Product
-  </button>
 </form>
 <!-- Form -->
